@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\homeController;
+use App\Http\Controllers\LiveSearchController;
 use App\Http\Controllers\registrationController;
 
 /*
@@ -19,6 +20,12 @@ use App\Http\Controllers\registrationController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+
+Route::get('/login/google',[loginController::class,'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback',[loginController::class,'handleGoogleCallback']);
 
 Route::get('/login',[loginController::class,'index']);
 Route::post('/login',[loginController::class,'verify']);
@@ -50,9 +57,17 @@ Route::group(['middleware'=>['checkType']],function(){
 	Route::post('/donate/{id}',[homeController::class,'postdonation']);
 
 	Route::get('/logout', [homeController::class, 'logout']);
+	
+	Route::get('/live_search',[LiveSearchController::class,'index']);
+	Route::get('/live_search/action',[LiveSearchController::class,'action'])->name('live_search.action');
 
-
+	Route::get('/home/generateReport',[homeController::class,'generateReport']);
+    Route::post('/home/generateReport',[homeController::class,'downloadReport']);
+    Route::get('/allcampaignlist',[homeController::class,'allcampaignlist']);
 
 });
 
 });
+
+
+

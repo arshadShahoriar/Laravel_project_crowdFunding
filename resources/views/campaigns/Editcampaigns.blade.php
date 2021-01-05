@@ -60,6 +60,8 @@
 		</fieldset>
 	</form>
 
+
+
 	<span style="color: red">@error('target_fund'){{$message}}@enderror</span> <br>
 	<span style="color: red">@error('raised_fund'){{$message}}@enderror</span> <br>
 	<span style="color: red">@error('ctype'){{$message}}@enderror</span> <br>

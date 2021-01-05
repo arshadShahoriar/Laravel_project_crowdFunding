@@ -5,7 +5,9 @@
      <a href={{ "sharedCampaigns" }}> sharedCampaigns</a>   
      <a href={{ "logout" }}> logout</a>  
      <a href={{ "about" }}> about</a> 
-       
+     <a href={{ "live_search"}}> search</a> 
+     <a href={{ "/home/generateReport"}}> Report of donations</a> 
+        <a href={{ "allcampaignlist"}}> fetch_data_from_node</a> 
      
      <table>
 	<thead>	
@@ -37,10 +39,21 @@
       							<a href={{"report/".$campaign['id']}}> Report </a>
       							<a href={{"delete/".$campaign['id']}}> Delete </a>
       							<a href={{ "donate/".$campaign['id']}}> Make Donation</a> 
+
+      						</td>
+      						<td>
+      						<!-- 	<img src="{{asset('/public/images/'.$campaign['image'])}}" > -->
+      							<img src="storage/images/{{$campaign['image']}}" style="width:128px;height:128px;">
+
+      							
       						</td>
                         </tbody>
                     @endforeach
 </table>
+
+<!-- <img src="storage/images/Capture10_1609797914.PNG" > -->
+ 
+
 
 
 </html>

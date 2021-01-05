@@ -10,11 +10,17 @@ use App\Models\volunteer;
 use App\Models\user;
 use Carbon\Carbon;
 use Response;
+use PDF;
+use Goutte\Client;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
 class homeController extends Controller
 {
+
+	private $states = [];
+    private $bd_states = [];
+
     public function index(Request $req){
 
     	if ($req->session()->has('uid')) {
@@ -325,6 +331,84 @@ class homeController extends Controller
     	
     	$volunteer->update();
         return redirect('home');
+    }
+
+    
+
+     public function search_campaigns(Request $req){
+
+
+    	return redirect('LiveSearch');
+    }
+
+     public function generateReport()
+	 {
+
+	 	$campaign = donation::all();
+    	return view('report.reportgenerate',['campaigns'=>$campaign]);
+
+       // return view('admin.report');
+    }
+
+    public function downloadReport(Request $req)
+    {	
+
+    		//$variable = donation::all();
+    		$campaigns = donation::all();
+
+    	 $pdf = PDF::loadView('report.download',compact('campaigns'));
+
+         //$pdf = PDF::loadView('report.reportgenerate',compact('variable'));
+        return $pdf->download('donations.pdf');
+       }
+
+    public function searchCampaign(Request $req){
+        if($req->ajax()){
+            $campaign = Campaign::getCampaignBySearch($req);
+            return response()->json($campaign);
+        }
+        else{
+            return Redirect()->Back();
+        }
+    }
+
+     public function allcampaignlist(Request $req){
+       
+
+       	$client = new Client();
+        
+        $page = $client->request('GET', 'http://localhost:3000/home/campaigns');
+        // echo '<pre>';
+        // print_r($page);
+        // $total = $page->filter('.maincounter-number')->text();
+
+        $page->filter('.maincounter-number')->each(function($item) {
+            array_push($this->states, $item->text());
+            //echo $item->text();
+        });
+
+        $page_bd = $client->request('GET', 'http://localhost:3000/home/campaigns');
+
+        $page_bd->filter('.maincounter-number1')->each(function($item) {
+            array_push($this->bd_states, $item->text());
+        });
+
+        $result = $this->returnResult();
+
+        return response($result, 200);
+    }
+
+        private function returnResult() {
+        $output = [];
+        $output['first_title'] = $this->states[0];
+        $output['second_title'] = $this->states[1];
+        $output['third_title'] = $this->states[2];
+
+        $output['1st_discription'] = $this->bd_states[0];
+        $output['2st_discription'] = $this->bd_states[1];
+        $output['3st_discription'] = $this->bd_states[2];
+
+        return $output;
     }
 
 

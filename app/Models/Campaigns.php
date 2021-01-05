@@ -9,4 +9,6 @@ class Campaigns extends Model
 {
     use HasFactory;
    	public $timestamps = false;
+
+   	
 }

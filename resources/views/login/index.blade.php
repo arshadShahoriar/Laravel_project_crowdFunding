@@ -21,6 +21,9 @@
                     <input type="submit" name="login" class="btn btn-danger" value="Login" class="form-control">
                 </div>
         </div>
-		
+		<a href="{{route('login.google')}}" name="loginwithGoogle" >Login With Google</a>
 	</body>
+<br>
+        <span style="color: red">@error('username'){{$message}}@enderror</span> <br>
+    <span style="color: red">@error('password'){{$message}}@enderror</span> <br>
 </html>
